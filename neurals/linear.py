@@ -14,8 +14,8 @@ class NNet(nn.Module):
         self.input_shape = input_shape[0]
         self.hidden_shape = hidden_shape
         self.output_shape = output_shape
-        self.l1 = torch.nn.Linear(self.input_shape, self.hidden_shape)
-        self.l2 = torch.nn.Linear(self.hidden_shape, self.output_shape)
+        self.l1 = nn.Linear(self.input_shape, self.hidden_shape)
+        self.l2 = nn.Linear(self.hidden_shape, self.output_shape)
 
     def forward(self, x):
         x = torch.from_numpy(x).float().to(self.device)

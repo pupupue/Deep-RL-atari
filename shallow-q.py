@@ -56,6 +56,7 @@ class Shallow_Q_Learner(object):
 if __name__ == "__main__":
     observation_shape = env.observation_space.shape
     action_shape = env.action_space.n
+    print(observation_shape)
     agent = Shallow_Q_Learner(observation_shape, action_shape)
     first_episode = True
     episode_rewards = list()

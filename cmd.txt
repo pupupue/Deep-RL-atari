@@ -1,0 +1,8 @@
+RUN: $ python3 D2xDQN.py --env "SpaceInvaders-v4"
+RUN: $ python3 DQN-TD.py --env "SpaceInvaders-v4"
+TEST: $ python3 D2xDQN.py --env "SpaceInvaders-v4" --test --record
+TEST: $ python3 DQN-TD.py --env "SpaceInvaders-v4" --test --record
+DEBUG MEM: $ fil-profile run DQN.py --env "SpaceInvaders-v4"
+DEBUG MEM: $ fil-profile run D2xDQN.py --env "SpaceInvaders-v4"
+tensorboard -> open command pallete: Launch Tensorboard
+tensorboard: tensorboard --logdir=logs/ --host localhost --port 8888
