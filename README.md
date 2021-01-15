@@ -64,9 +64,7 @@ Currently has implementations of
 <!-- GETTING STARTED -->
 ## Getting Started
 
-python3.8>=
-pytorch
-gym[atari]
+python >=3.8, pytorch, gym[atari]
 
 ### Installation
 
