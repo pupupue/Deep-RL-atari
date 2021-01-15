@@ -201,14 +201,16 @@ class D2xDQNagent(object):
         T_target = torch.from_numpy(T_target).to(device)
         action_idx = torch.from_numpy(action_batch).to(device)
 
-        loss = F.mse_loss(self.Qnet(obs_batch).gather(1, action_idx.view(-1, 1).type(torch.LongTensor)), T_target.float().unsqueeze(1))
         self.Qnet_optimizer.zero_grad()
         """ IF prio_mem Update priority """
         if self.prioritized_memory:
-            loss = (torch.FloatTensor(is_weights) * loss)
-            self.memory.batch_update(b_idx, loss)
-
-        loss.mean().backward()
+            errors = torch.abs(self.Qnet(obs_batch).gather(1, action_idx.view(-1, 1).type(torch.LongTensor)) - T_target.float().unsqueeze(1))
+            self.memory.batch_update(b_idx, errors)
+            loss = (F.mse_loss(self.Qnet(obs_batch).gather(1, action_idx.view(-1, 1).type(torch.LongTensor)), T_target.float().unsqueeze(1)) * torch.FloatTensor(is_weights)).mean()
+            loss.backward()
+        else:
+            loss = F.mse_loss(self.Qnet(obs_batch).gather(1, action_idx.view(-1, 1).type(torch.LongTensor)), T_target.float().unsqueeze(1))
+            loss.mean().backward()
         if self.ep_num % 10 == 0:
             writer.add_scalar("DQL/td_error", loss.mean(), self.step_num)
         self.Qnet_optimizer.step()
@@ -293,15 +295,12 @@ class D2xDQNagent(object):
                 VS
                 add less trivial memories (chosen tactic)
             """
-            """
             if reward != 0 or done is True:
                 self.memory.store(Experience(obs, action, reward, next_obs, done))
             else:
                 if random.random() > 0.7:
                     self.memory.store(Experience(obs, action, reward, next_obs, done))
-            """
             """ THIS IS CORRECT FORM BUT I TRAINED EARLY WITH 0.7 thing so put this back when done with same hypers
-            """
             
             if self.prioritized_memory:
                 self.memory.store(Experience(obs, action, reward, next_obs, done))
@@ -311,7 +310,6 @@ class D2xDQNagent(object):
                 else:
                     if random.random() > 0.7:
                         self.memory.store(Experience(obs, action, reward, next_obs, done))
-            """
             """
             obs = next_obs
             cum_reward += reward
