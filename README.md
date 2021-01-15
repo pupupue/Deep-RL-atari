@@ -54,6 +54,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+Currently has implementations of
+* DQN
+* DDQN
+* DUELING DDQN (D3QN)
+* Replay memory
+* Prioritized memory
 
 <!-- GETTING STARTED -->
 ## Getting Started
