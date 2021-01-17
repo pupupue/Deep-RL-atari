@@ -66,7 +66,6 @@ np.random.seed(seed)
 if torch.cuda.is_available() and use_cuda:
     torch.cuda.manual_seed_all(seed)
 
-
 class Deep_Q_Learner(object):
     def __init__(self, state_shape, action_shape, params):
         """   HYPERPARAMATERS   """
