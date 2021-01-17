@@ -33,7 +33,7 @@ args.add_argument(
 )
 args.add_argument(
     "--env", 
-    help="ID of the Atari environment available in OpenAI Gym.Default is SeaquestNoFrameskip-v4",
+    help="ID of the Atari environment available in OpenAI Gym.Default is SpaceInvaders-v4",
     default="SpaceInvaders-v4",
     metavar="ENV"
 )
@@ -174,6 +174,8 @@ class D2xDQNagent(object):
     LEARN_FROM_BATCH_EXPERIENCE
 
     :param experiences: tuple, contains batches of experiences 
+    :param b_idx:
+    :param is_weights:
     """
     def learn_from_batch_experience(self, experiences, b_idx=None, is_weights=None):
         xp_batch = Experience(*zip(*experiences))
@@ -384,7 +386,12 @@ class D2xDQNagent(object):
                 if self.ep_num % 1 == 0:
                     self.print_stats(cum_reward, step)
                 break
-          
+              
+    """
+    GET QVALUES
+
+    :param obs: observation
+    """
     def get_Qvalues(self, obs):
         obs = np.array(obs) / 255.0
         obs = np.expand_dims(obs, axis=0)
